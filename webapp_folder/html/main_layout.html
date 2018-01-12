@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="people" ng-controller="page">
 <head>
 <meta charset="UTF-8">
-<title></title>
+<title> People . Elkhorn.io</title>
 
 
 <style>
@@ -17,36 +17,77 @@ body { font-family: 'Raleway', sans-serif; color: #777; background-color: #FAFAF
 .user_image { margin-right: 5px; }
 .user_image img { border-radius: 50%; width: 40px; height: 40px; }
 
+main { outline: 1px solid #eee; width: 650px; min-height: 150px; padding-bottom: 45px; margin: 0 auto; background-color: #fff; box-shadow: 7px 5px 10px #C2FFDF; }
+.page_data { padding: 25px; }
+
+.main_nav { position: fixed; left: 25px; top: 125px; font-size: 12px; }
 
 </style>
+
+<script type="text/javascript" src="../../files/angular1.5.min.js"></script>
+<script>
+
+var elk = angular.module("people", [],
+function($interpolateProvider) {
+  $interpolateProvider.startSymbol('[!');
+  $interpolateProvider.endSymbol('!]');
+}) ///
+
+elk.controller('page', function($scope,$http,$sce) {
+
+$scope.user_email = '{{ user_email }}';
+
+
+$scope.show_input = 'off';
+
+$scope.people_list = '';
+$http({ method: 'GET', url: '/_list_people?' + $scope.user_email})
+  .success(function(data, status) { $scope.people_list = data; console.log(data); });
+
+
+$scope.showInput = function () { $scope.show_input = 'on'; };
+$scope.hideInput = function () { $scope.show_input = 'off'; };
+
+// - Date and Time
+var today = new Date();
+$scope.month_now = today.getMonth();
+$scope.year_now = today.getFullYear();
+$scope.date = { year : $scope.year_now, month : $scope.month_now };
+
+
+
+}); ///
+
+</script>
 
 </head>
 <body>
 
-  <div class="user_gate" ng-show="modal=='on'">
-    {% if user_name != 'No User' %}
-    <a href="../../my_info">
-      <div class="user_image"><img ng-src="/render_img?client?thumb?[! my_info.client_email !]"></a>
-      </div>{% endif %}
-      <div class="user_name">
+  <div class="user_gate">
+    {% if user_name != 'No User' %}<a href="../../my_info">
+      <div class="user_image"><img ng-src="/render_img?client?thumb?[! my_info.client_email !]">
+    </div></a>{% endif %}
+    <div class="user_name">
       {% if user_name != 'No User' %}{{ user_name }}{% endif %}
-    <p><a href="{{ login_key }}">{{ gate }}</a></p>
-    </div>
+      <p><a href="{{ login_key }}">{{ gate }}</a></p>
+    </div><!-- . user_name - -->
   </div><!-- . user_gate - -->
 
-<header>hi test</header>
+<header><div class="site_name">People . Server</div></header>
 
-<div>ppl</div>
+<div>_s</div>
 
-
+{% if user_name != 'No User' %}
+<aside><nav class="main_nav">
+  <a href="../../edit_people"><div>Edit People</div></a>
+</nav></aside>
+{% endif %}
 
 <main>
-
-
-{{ page_html }}
-
+  <div class="page_data">
+    {{ page_html|safe }}
+  </div><!-- . page_data - -->
 </main>
-
 
 
 </body>
