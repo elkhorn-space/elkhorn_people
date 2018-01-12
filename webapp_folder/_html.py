@@ -6,9 +6,11 @@
 hi_test = 'hi hi hi'
 
 
-edit_people = '''
+edit_people = '''<style>
 
+.input_form_wrap { display: inline-block; vertical-align: top; border: 15px dashed #839496; padding: 20px; margin: 5px; }
 
+</style>
 <div class="main_html">
 
 <div class="input_button" ng-hide="show_input=='on'" ng-click="showInput()">Show Input</div>
@@ -59,11 +61,21 @@ edit_people = '''
     </table>
   </form>
 </div><!-- . input_form_wrap - -->
+<style>
+.people_list_wrap { display: inline-block; }
+.people_list_item { margin: 10px; padding: 20px; border: 5px solid #eee; padding-right: 15px; transition: border 1s; display: inline-block; width: 100px; }
+.people_list_item:hover { border: 5px solid #839496; }
 
+.chat_link { font-size: 12px; padding-left: 15px; }
+.chat_link a { color: #aaa; }
+
+</style>
 <div class="people_list_wrap">
+<input type="text" ng-model="chat" />
   <div class="people_list_data">
     <div class="people_list_item" ng-repeat="item in people_list">
-      <div>[!item.item_name!]</div>
+      <div>[! item.item_name !]</div>
+      <div class="chat_link"><a href="https://[!chat!].com/[! item.item_chat !]" target="_blank">[! item.item_chat !]</a></div>
     </div><!-- . people_list_item - -->
   </div><!-- . people_list_data - -->
 </div><!-- . people_list_wrap - -->
